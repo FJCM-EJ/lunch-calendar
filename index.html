@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-id="th-modified">Firm Lunch Calendar</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0f2044; --navy-mid: #1a3560; --navy-light: #2a4d8a;
+      --accent: #4f7de8; --accent-bright: #6d96f7; --gold: #e8b84f;
+      --surface: #f4f6fb; --card: #ffffff; --text: #1a2640;
+      --muted: #6b7fa3; --border: #d8e0ef; --today-ring: #4f7de8;
+    }
+    .venue-color-0 { background: #ffecea; color: #c0120c; border: 1px solid #f5c0bc; }
+    .venue-color-1 { background: #eef6ff; color: #1a5fb4; border: 1px solid #b8d4f5; }
+    .venue-color-2 { background: #fff8e5; color: #7a5200; border: 1px solid #f0d98a; }
+    .venue-color-3 { background: #edfaf3; color: #1a6640; border: 1px solid #a8dfc0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--text); min-height: 100vh; }
+    header {
+      background: var(--navy); padding: 24px 36px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 3px solid var(--gold);
+    }
+    .header-left h1 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #fff; }
+    .header-left p { font-size: 0.78rem; color: var(--accent-bright); margin-top: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .month-nav { display: flex; align-items: center; gap: 16px; }
+    .month-nav button {
+      background: var(--navy-mid); border: 1px solid var(--navy-light); color: #fff;
+      width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+    }
+    .month-nav button:hover { background: var(--accent); border-color: var(--accent); }
+    .month-label { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; min-width: 160px; text-align: center; }
+    .legend { display: flex; gap: 20px; padding: 10px 36px; background: var(--navy-mid); align-items: center; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.75rem; color: #c8d4f0; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; background: var(--gold); }
+    .cal-wrapper { padding: 24px 28px 32px; }
+    .day-headers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
+    .day-header { text-align: center; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 4px 0; }
+    .cal-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .cal-cell {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      min-height: 100px; padding: 10px 10px 8px;
+      display: flex; flex-direction: column; gap: 4px;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .cal-cell:hover { box-shadow: 0 4px 18px rgba(15,32,68,0.10); transform: translateY(-1px); }
+    .cal-cell.empty { background: transparent; border: none; pointer-events: none; }
+    .cal-cell.today { border: 2px solid var(--today-ring); box-shadow: 0 0 0 3px rgba(79,125,232,0.12); }
+    .date-num { font-size: 0.82rem; font-weight: 600; color: var(--navy); line-height: 1; margin-bottom: 2px; }
+    .cal-cell.today .date-num {
+      background: var(--accent); color: #fff; width: 24px; height: 24px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.77rem;
+    }
+    .order-links { display: flex; flex-direction: column; gap: 4px; }
+    .order-btn {
+      display: flex; align-items: center; gap: 5px; padding: 5px 8px; border-radius: 5px;
+      font-size: 0.67rem; font-weight: 600; text-decoration: none; letter-spacing: 0.02em;
+      transition: filter 0.15s, transform 0.1s; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .order-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+    .no-order { font-size: 0.65rem; color: #c5cede; margin-top: auto; font-style: italic; }
+    footer { text-align: center; padding: 16px; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border); }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 640px) {
+      header { padding: 16px; flex-direction: column; gap: 12px; }
+      .cal-wrapper { padding: 12px 8px 20px; }
+    }
+  </style>
+<meta property="og:title" content="Firm Lunch Calendar" data-id="th-modified"><meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png" data-id="th-modified"><meta property="og:image:width" content="1501" data-id="th-modified"><meta property="og:image:height" content="1501" data-id="th-modified"><meta property="og:image:type" content="image/png" data-id="th-modified"><meta property="og:url" content="https://amethyst-kendra-4.tiiny.site/" data-id="th-modified"><meta property="og:type" content="website" data-id="th-modified"><script defer="" data-domain="amethyst-kendra-4.tiiny.site" src="https://analytics.tiiny.net/js/plausible.js"></script></head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>🍽 Firm Lunch Calendar</h1>
+    <p>Group Ordering · Tuesdays &amp; Thursdays</p>
+  </div>
+  <div class="month-nav">
+    <button onclick="changeMonth(-1)">←</button>
+    <span class="month-label" id="monthLabel"></span>
+    <button onclick="changeMonth(1)">→</button>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot"></div> Group order day — click a venue to open</div>
+</div>
+
+<div class="cal-wrapper">
+  <div class="day-headers">
+    <div class="day-header">Mon</div>
+    <div class="day-header">Tue</div>
+    <div class="day-header">Wed</div>
+    <div class="day-header">Thu</div>
+    <div class="day-header">Fri</div>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+</div>
+
+<footer>
+  Questions? Contact <a href="mailto:ejarman@fjcapital.com">ejarman@fjcapital.com</a>
+</footer>
+
+<script>
+// ============================================================
+//  ✏️  EDIT HERE — Add your venues for each Tuesday & Thursday
+// ============================================================
+const DATE_OVERRIDES = {
+
+  // ── MARCH 2026 ──────────────────────────────────────────
+
+  "2026-3-3": [
+    { label: "Sweet Green", url: "https://drd.sh/cart/FzdhkHkpL1Now95I/" },
+    { label: "Moby Dick's", url: "https://drd.sh/cart/6dWgWwKYMhQPG2Bi/" },
+  ],
+  "2026-3-5": [
+    { label: "Capo Deli",  url: "https://drd.sh/cart/o4nq2CE1IDXf8pz5/" },
+    { label: "Sweet Leaf", url: "https://drd.sh/cart/usGgM6ZOcWHJrnf1/" },
+  ],
+  "2026-3-10": [
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+  ],
+  "2026-3-12": [
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+  ],
+  "2026-3-17": [
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+  ],
+  "2026-3-19": [
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+  ],
+  "2026-3-24": [
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+  ],
+  "2026-3-26": [
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+  ],
+  "2026-3-31": [
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: "https://REPLACE_ME" },
+  ],
+
+  // ── APRIL 2026 ──────────────────────────────────────────
+
+  "2026-4-2": [
+    { label: "Dave's Hot Chicken", url: "https://drd.sh/cart/MWJ0naKtZXV83RFh/" },
+    { label: "Sweet Leaf",         url: "https://drd.sh/cart/lxM2Wk2pctpt2q1D/" },
+  ],
+  "2026-4-7": [
+    { label: "CAPO Deli",  url: "https://drd.sh/cart/BN7ChkPWi5JOHBVP/" },
+    { label: "Sweet Leaf", url: "https://drd.sh/cart/l1QnZO9ucrjbKChH/" },
+  ],
+  "2026-4-9": [
+    { label: "CHOPT",     url: "https://drd.sh/cart/UOK4iuUJ94FYIH7x/" },
+    { label: "HoneyGrow", url: "https://drd.sh/cart/PsGFTMj2AL01AU03/" },
+  ],
+  "2026-4-14": [
+    { label: "Dave's Hot",          url: "https://drd.sh/cart/Q0Eu1JbEmMYXxQQ5/" },
+    { label: "HAPPY BDAY DEREK! 🎂", url: "https://fjcapital.sharepoint.com/:i:/s/FJGlobalHQ2/IQBBM_Yy4JRzRKInBgPmHMg6AQtVIN-8zjuHbrbagA4HyyU?e=pOMhOo" },
+    { label: "Flower Child",         url: "https://drd.sh/cart/dwCgQEFF4NUDCf78/" },
+  ],
+  "2026-4-16": [
+    { label: "CAVA",     url: "https://drd.sh/cart/tpE2YkwWa4Uw193O/" },
+    { label: "Chipotle", url: "https://drd.sh/cart/pH6sVAxjA7n5ZUTu/" },
+  ],
+  "2026-4-21": [
+    { label: "Moby's", url: "https://drd.sh/cart/zUBAWLb23Tw9X9Vg/" },
+    { label: "CHOPT",  url: "https://drd.sh/cart/BDK3f3sosOzb4QpS/" },
+  ],
+  "2026-4-23": [
+    { label: "Flower Child", url: "https://drd.sh/cart/XZhsJAIvo4lscaSK/" },
+    { label: "Sweet Leaf",   url: "https://drd.sh/cart/kGY3KqS29xnbIsb8/" },
+  ],
+  "2026-4-28": [
+    { label: "Lost Dog",    url: "https://drd.sh/cart/odA7sgQP1IOBeKjS/" },
+    { label: "Sweet Green", url: "https://drd.sh/cart/e2nVcBwWdvJdqF3f/" },
+  ],
+  "2026-4-30": [
+    { label: "NANDOS", url: "https://drd.sh/cart/hxOL5TwH9vJQ9MeN/" },
+    { label: "CAVA",   url: "https://drd.sh/cart/UbDBWAY4qBYJFDmt/" },
+  ],
+
+  // ── MAY 2026 ────────────────────────────────────────────
+
+  "2026-5-5": [
+    { label: "EL BEBE", url: "https://ivory-celina-61.tiiny.site/" },
+    { label: "CHOPT",   url: "https://drd.sh/cart/s40a7a3om8qGwOis/" },
+  ],
+  "2026-5-7": [
+    { label: "Flower Child",    url: "https://drd.sh/cart/K2U80UByc9AZPkbD/" },
+    { label: "Sweet Leaf",      url: "https://drd.sh/cart/laUWBFuHoRblnz82/" },
+    { label: "HBD Brendan!! 🎂", url: "https://REPLACE_ME" },
+  ],
+  "2026-5-12": [
+    { label: "Lost Dog",    url: "https://drd.sh/cart/NMRwVy19nGefrEhf/" },
+    { label: "Sweet Green", url: "https://drd.sh/cart/02lDn3iulkl0xupI/" },
+  ],
+  "2026-5-14": [
+    { label: "Cheesecake Factory", url: "https://drd.sh/cart/Vyc4oS2HOejC14pa/" },
+    { label: "HBD Susan!! 🎂",     url: "https://REPLACE_ME" },
+  ],
+  "2026-5-19": [
+    { label: "CAVA",   url: "https://drd.sh/cart/fEnPt5B6M05eph6R/" },
+    { label: "MOBY'S", url: "https://drd.sh/cart/ljLBlCj5wIi9FZtv/" },
+  ],
+  "2026-5-21": [
+    { label: "Flower Child", url: "https://jade-susanetta-69.tiiny.site/#fc" },
+    { label: "NANDOS",       url: "https://jade-susanetta-69.tiiny.site/#nan" },
+    { label: "Sweet Leaf",   url: "https://jade-susanetta-69.tiiny.site/#sl" },
+  ],
+  "2026-5-26": [
+    { label: "The Sandwich Shop",    url: "https://drd.sh/cart/wwiDErWesJkUF5GM/" },
+    { label: "Sweet Green",          url: "https://drd.sh/cart/SXnPnCwGOtzGD3KS/" },
+    { label: "Happy BDAY Stache!! 🎂", url: "https://jade-susanetta-69.tiiny.site/" },
+  ],
+  "2026-5-28": [
+    { label: "CAPO Deli", url: "https://drd.sh/cart/sB79xq8x5BFgEDBv/" },
+    { label: "CHOPT",     url: "https://drd.sh/cart/naWhE0fovdGXgwI9/" },
+  ],
+
+  // ── JUNE 2026 ───────────────────────────────────────────
+
+  "2026-6-2": [
+    { label: "Moby's",     url: "https://drd.sh/cart/zdFIsS6afa3iKvw5/" },
+    { label: "Sweet Leaf", url: "https://drd.sh/cart/oEz1thA2uHZ8uF5Z/" },
+  ],
+  "2026-6-4": [
+    { label: "Flower Child", url: "https://drd.sh/cart/1hAxz166ocPa9MZp/" },
+    { label: "CHOPT",        url: "https://drd.sh/cart/g529PnEvpWA5aXoA/" },
+  ],
+  "2026-6-9": [
+    { label: "CAVA",        url: "https://REPLACE_ME" },
+    { label: "Sweet Green", url: "https://REPLACE_ME" },
+    { label: "Dave's Hot",  url: "https://REPLACE_ME" },
+  ],
+  "2026-6-11": [
+    { label: "CHOPT 🎉",    url: "https://salmon-dasha-91.tiiny.site/#chopt" },
+    { label: "Chipotle 🎉", url: "https://salmon-dasha-91.tiiny.site/#chipotle" },
+  ],
+  "2026-6-16": [
+    { label: "Sweet Leaf 🌸",  url: "https://forms.office.com/r/z9Tg92cUD1" },
+    { label: "Mezeh 🌸",       url: "https://mezeh.com/group/7ec20eca-00b9-4df7-a582-7349cc274cf4" },
+    { label: "HBD LALA!! 🎂",  url: "https://salmon-dasha-91.tiiny.site/" },
+  ],
+  "2026-6-18": [
+    { label: "CAPO",       url: "https://REPLACE_ME" },
+    { label: "Sweet Leaf", url: "https://REPLACE_ME" },
+  ],
+  "2026-6-23": [
+    { label: "The Sandwich Shop", url: "https://REPLACE_ME" },
+    { label: "CHOPT",             url: "https://REPLACE_ME" },
+  ],
+  "2026-6-25": [
+    { label: "Chipotle",    url: "https://REPLACE_ME" },
+    { label: "Sweet Green", url: "https://REPLACE_ME" },
+  ],
+  "2026-6-30": [
+    { label: "Nandos", url: "https://drd.sh/cart/CmCYOx1GYqc2VOuK/" },
+    { label: "Sweet Leaf", url: "https://drd.sh/cart/FAet1AbbtSz9loHI/" },
+  ],
+  "2026-7-2": [
+    { label: "SweetGreen", url: "https://REPLACE_ME" },
+    { label: "Flower Child", url: "https://REPLACE_ME" },
+  ],
+  "2026-7-7": [
+    { label: "Sweet Leaf", url: "https://drd.sh/cart/E4QY444lhR10ea6s/" },
+    { label: "Chipotle", url: "https://drd.sh/cart/jpWL6juRSXHu45Zy/" },
+  ],
+  "2026-7-9": [
+    { label: "SweetGreen", url: "https://drd.sh/cart/kn3ijLqtH5ktbfXx/" },
+    { label: "Chick-Fil-A", url: "https://drd.sh/cart/xUXMCkhhHaBzN24p/" },
+  ],
+  "2026-7-14": [
+    { label: "MOD FRESH", url: "https://REPLACE_ME" },
+    { label: "Nandos", url: "https://REPLACE_ME" },
+  ],
+  "2026-7-16": [
+    { label: "Royal Greens by Wonder", url: "https://REPLACE_ME" },
+    { label: "Moby", url: "https://REPLACE_ME" },
+  ],
+  "2026-7-21": [
+    { label: "CHOPT", url: "https://REPLACE_ME" },
+    { label: "CAVA", url: "https://REPLACE_ME" },
+  ],
+  "2026-7-23": [
+    { label: "Sweet Leaf", url: "https://REPLACE_ME" },
+    { label: "Potbelly", url: "https://REPLACE_ME" },
+  ],
+  "2026-7-28": [
+    { label: "CHOPT", url: "https://REPLACE_ME" },
+    { label: "CAPO", url: "https://REPLACE_ME" },
+  ],
+  "2026-7-30": [
+    { label: "MOD FRESH", url: "https://REPLACE_ME" },
+    { label: "Super Chicken", url: "https://REPLACE_ME" },
+  ],
+
+};
+// ============================================================
+//  🚫 DO NOT EDIT BELOW THIS LINE
+// ============================================================
+
+  const MONTHS = ["January","February","March","April","May","June",
+                  "July","August","September","October","November","December"];
+  let current = new Date();
+  let viewYear = current.getFullYear();
+  let viewMonth = current.getMonth();
+
+  function changeMonth(delta) {
+    viewMonth += delta;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    if (viewMonth < 0)  { viewMonth = 11; viewYear--; }
+    render();
+  }
+
+  function isTueThu(dow) { return dow === 2 || dow === 4; }
+
+  function render() {
+    document.getElementById("monthLabel").textContent = `${MONTHS[viewMonth]} ${viewYear}`;
+    const grid = document.getElementById("calGrid");
+    grid.innerHTML = "";
+
+    const today = new Date();
+    const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+    const blanks = (firstDay === 0 || firstDay === 6) ? 0 : firstDay - 1;
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+    for (let b = 0; b < blanks; b++) {
+      const empty = document.createElement("div");
+      empty.className = "cal-cell empty";
+      grid.appendChild(empty);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(viewYear, viewMonth, d);
+      const dow = date.getDay();
+      if (dow === 0 || dow === 6) continue;
+
+      const isToday = (d === today.getDate() && viewMonth === today.getMonth() && viewYear === today.getFullYear());
+      const cell = document.createElement("div");
+      cell.className = "cal-cell" + (isToday ? " today" : "");
+
+      const num = document.createElement("div");
+      num.className = "date-num";
+      num.textContent = d;
+      cell.appendChild(num);
+
+      if (isTueThu(dow)) {
+        const key = `${viewYear}-${viewMonth + 1}-${d}`;
+        const venues = DATE_OVERRIDES[key] || [];
+        const links = document.createElement("div");
+        links.className = "order-links";
+
+        if (venues.length > 0) {
+          venues.forEach((venue, i) => {
+            const a = document.createElement("a");
+            a.className = `order-btn venue-color-${i % 4}`;
+            a.href = venue.url;
+            a.target = "_blank";
+            a.rel = "noopener";
+            a.title = venue.label;
+            a.innerHTML = `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>${venue.label}`;
+            links.appendChild(a);
+          });
+        } else {
+          const no = document.createElement("div");
+          no.className = "no-order";
+          no.textContent = "Links coming soon";
+          links.appendChild(no);
+        }
+
+        cell.appendChild(links);
+      } else {
+        const no = document.createElement("div");
+        no.className = "no-order";
+        no.textContent = "—";
+        cell.appendChild(no);
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  render();
+</script>
+
+
+</body></html>
