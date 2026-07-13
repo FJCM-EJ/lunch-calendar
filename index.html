@@ -1,8 +1,10 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-id="th-modified">Firm Lunch Calendar</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <title>Firm Lunch Calendar</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -68,7 +70,7 @@
       .cal-wrapper { padding: 12px 8px 20px; }
     }
   </style>
-<meta property="og:title" content="Firm Lunch Calendar" data-id="th-modified"><meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png" data-id="th-modified"><meta property="og:image:width" content="1501" data-id="th-modified"><meta property="og:image:height" content="1501" data-id="th-modified"><meta property="og:image:type" content="image/png" data-id="th-modified"><meta property="og:url" content="https://amethyst-kendra-4.tiiny.site/" data-id="th-modified"><meta property="og:type" content="website" data-id="th-modified"><script defer="" data-domain="amethyst-kendra-4.tiiny.site" src="https://analytics.tiiny.net/js/plausible.js"></script></head>
+</head>
 <body>
 
 <header>
@@ -77,9 +79,9 @@
     <p>Group Ordering · Tuesdays &amp; Thursdays</p>
   </div>
   <div class="month-nav">
-    <button onclick="changeMonth(-1)">←</button>
+    <button onclick="changeMonth(-1)">&#8592;</button>
     <span class="month-label" id="monthLabel"></span>
-    <button onclick="changeMonth(1)">→</button>
+    <button onclick="changeMonth(1)">&#8594;</button>
   </div>
 </header>
 
@@ -106,6 +108,10 @@
 // ============================================================
 //  ✏️  EDIT HERE — Add your venues for each Tuesday & Thursday
 // ============================================================
+
+// Teams chat link — clicking any unlinked button messages Erica 👑
+const QUEEN_LINK = "https://teams.microsoft.com/l/chat/0/0?users=ejarman@fjcapital.com&message=Please%20update%20the%20lunch%20calendar%2C%20my%20queen%21";
+
 const DATE_OVERRIDES = {
 
   // ── MARCH 2026 ──────────────────────────────────────────
@@ -119,32 +125,32 @@ const DATE_OVERRIDES = {
     { label: "Sweet Leaf", url: "https://drd.sh/cart/usGgM6ZOcWHJrnf1/" },
   ],
   "2026-3-10": [
-    { label: "Replace Me", url: "https://REPLACE_ME" },
-    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: QUEEN_LINK },
+    { label: "Replace Me", url: QUEEN_LINK },
   ],
   "2026-3-12": [
-    { label: "Replace Me", url: "https://REPLACE_ME" },
-    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: QUEEN_LINK },
+    { label: "Replace Me", url: QUEEN_LINK },
   ],
   "2026-3-17": [
-    { label: "Replace Me", url: "https://REPLACE_ME" },
-    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: QUEEN_LINK },
+    { label: "Replace Me", url: QUEEN_LINK },
   ],
   "2026-3-19": [
-    { label: "Replace Me", url: "https://REPLACE_ME" },
-    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: QUEEN_LINK },
+    { label: "Replace Me", url: QUEEN_LINK },
   ],
   "2026-3-24": [
-    { label: "Replace Me", url: "https://REPLACE_ME" },
-    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: QUEEN_LINK },
+    { label: "Replace Me", url: QUEEN_LINK },
   ],
   "2026-3-26": [
-    { label: "Replace Me", url: "https://REPLACE_ME" },
-    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: QUEEN_LINK },
+    { label: "Replace Me", url: QUEEN_LINK },
   ],
   "2026-3-31": [
-    { label: "Replace Me", url: "https://REPLACE_ME" },
-    { label: "Replace Me", url: "https://REPLACE_ME" },
+    { label: "Replace Me", url: QUEEN_LINK },
+    { label: "Replace Me", url: QUEEN_LINK },
   ],
 
   // ── APRIL 2026 ──────────────────────────────────────────
@@ -194,9 +200,9 @@ const DATE_OVERRIDES = {
     { label: "CHOPT",   url: "https://drd.sh/cart/s40a7a3om8qGwOis/" },
   ],
   "2026-5-7": [
-    { label: "Flower Child",    url: "https://drd.sh/cart/K2U80UByc9AZPkbD/" },
-    { label: "Sweet Leaf",      url: "https://drd.sh/cart/laUWBFuHoRblnz82/" },
-    { label: "HBD Brendan!! 🎂", url: "https://REPLACE_ME" },
+    { label: "Flower Child",     url: "https://drd.sh/cart/K2U80UByc9AZPkbD/" },
+    { label: "Sweet Leaf",       url: "https://drd.sh/cart/laUWBFuHoRblnz82/" },
+    { label: "HBD Brendan!! 🎂", url: QUEEN_LINK },
   ],
   "2026-5-12": [
     { label: "Lost Dog",    url: "https://drd.sh/cart/NMRwVy19nGefrEhf/" },
@@ -204,7 +210,7 @@ const DATE_OVERRIDES = {
   ],
   "2026-5-14": [
     { label: "Cheesecake Factory", url: "https://drd.sh/cart/Vyc4oS2HOejC14pa/" },
-    { label: "HBD Susan!! 🎂",     url: "https://REPLACE_ME" },
+    { label: "HBD Susan!! 🎂",     url: QUEEN_LINK },
   ],
   "2026-5-19": [
     { label: "CAVA",   url: "https://drd.sh/cart/fEnPt5B6M05eph6R/" },
@@ -216,8 +222,8 @@ const DATE_OVERRIDES = {
     { label: "Sweet Leaf",   url: "https://jade-susanetta-69.tiiny.site/#sl" },
   ],
   "2026-5-26": [
-    { label: "The Sandwich Shop",    url: "https://drd.sh/cart/wwiDErWesJkUF5GM/" },
-    { label: "Sweet Green",          url: "https://drd.sh/cart/SXnPnCwGOtzGD3KS/" },
+    { label: "The Sandwich Shop",     url: "https://drd.sh/cart/wwiDErWesJkUF5GM/" },
+    { label: "Sweet Green",           url: "https://drd.sh/cart/SXnPnCwGOtzGD3KS/" },
     { label: "Happy BDAY Stache!! 🎂", url: "https://jade-susanetta-69.tiiny.site/" },
   ],
   "2026-5-28": [
@@ -236,70 +242,73 @@ const DATE_OVERRIDES = {
     { label: "CHOPT",        url: "https://drd.sh/cart/g529PnEvpWA5aXoA/" },
   ],
   "2026-6-9": [
-    { label: "CAVA",        url: "https://REPLACE_ME" },
-    { label: "Sweet Green", url: "https://REPLACE_ME" },
-    { label: "Dave's Hot",  url: "https://REPLACE_ME" },
+    { label: "CAVA",        url: QUEEN_LINK },
+    { label: "Sweet Green", url: QUEEN_LINK },
+    { label: "Dave's Hot",  url: QUEEN_LINK },
   ],
   "2026-6-11": [
     { label: "CHOPT 🎉",    url: "https://salmon-dasha-91.tiiny.site/#chopt" },
     { label: "Chipotle 🎉", url: "https://salmon-dasha-91.tiiny.site/#chipotle" },
   ],
   "2026-6-16": [
-    { label: "Sweet Leaf 🌸",  url: "https://forms.office.com/r/z9Tg92cUD1" },
-    { label: "Mezeh 🌸",       url: "https://mezeh.com/group/7ec20eca-00b9-4df7-a582-7349cc274cf4" },
-    { label: "HBD LALA!! 🎂",  url: "https://salmon-dasha-91.tiiny.site/" },
+    { label: "Sweet Leaf 🌸", url: "https://forms.office.com/r/z9Tg92cUD1" },
+    { label: "Mezeh 🌸",      url: "https://mezeh.com/group/7ec20eca-00b9-4df7-a582-7349cc274cf4" },
+    { label: "HBD LALA!! 🎂", url: "https://salmon-dasha-91.tiiny.site/" },
   ],
   "2026-6-18": [
-    { label: "CAPO",       url: "https://REPLACE_ME" },
-    { label: "Sweet Leaf", url: "https://REPLACE_ME" },
+    { label: "CAPO",       url: QUEEN_LINK },
+    { label: "Sweet Leaf", url: QUEEN_LINK },
   ],
   "2026-6-23": [
-    { label: "The Sandwich Shop", url: "https://REPLACE_ME" },
-    { label: "CHOPT",             url: "https://REPLACE_ME" },
+    { label: "The Sandwich Shop", url: QUEEN_LINK },
+    { label: "CHOPT",             url: QUEEN_LINK },
   ],
   "2026-6-25": [
-    { label: "Chipotle",    url: "https://REPLACE_ME" },
-    { label: "Sweet Green", url: "https://REPLACE_ME" },
+    { label: "Chipotle",    url: QUEEN_LINK },
+    { label: "Sweet Green", url: QUEEN_LINK },
   ],
   "2026-6-30": [
-    { label: "Nandos", url: "https://drd.sh/cart/CmCYOx1GYqc2VOuK/" },
+    { label: "Nandos",     url: "https://drd.sh/cart/CmCYOx1GYqc2VOuK/" },
     { label: "Sweet Leaf", url: "https://drd.sh/cart/FAet1AbbtSz9loHI/" },
   ],
+
+  // ── JULY 2026 ────────────────────────────────────────────
+
   "2026-7-2": [
-    { label: "SweetGreen", url: "https://REPLACE_ME" },
-    { label: "Flower Child", url: "https://REPLACE_ME" },
+    { label: "SweetGreen",   url: QUEEN_LINK },
+    { label: "Flower Child", url: QUEEN_LINK },
   ],
   "2026-7-7": [
     { label: "Sweet Leaf", url: "https://drd.sh/cart/E4QY444lhR10ea6s/" },
-    { label: "Chipotle", url: "https://drd.sh/cart/jpWL6juRSXHu45Zy/" },
+    { label: "Chipotle",   url: "https://drd.sh/cart/jpWL6juRSXHu45Zy/" },
   ],
   "2026-7-9": [
-    { label: "SweetGreen", url: "https://drd.sh/cart/kn3ijLqtH5ktbfXx/" },
+    { label: "SweetGreen",  url: "https://drd.sh/cart/kn3ijLqtH5ktbfXx/" },
     { label: "Chick-Fil-A", url: "https://drd.sh/cart/xUXMCkhhHaBzN24p/" },
   ],
   "2026-7-14": [
-    { label: "MOD FRESH", url: "https://REPLACE_ME" },
-    { label: "Nandos", url: "https://REPLACE_ME" },
+    { label: "MOD FRESH", url: QUEEN_LINK },
+    { label: "Nandos",    url: QUEEN_LINK },
   ],
   "2026-7-16": [
-    { label: "Royal Greens by Wonder", url: "https://REPLACE_ME" },
-    { label: "Moby", url: "https://REPLACE_ME" },
+    { label: "Royal Greens by Wonder", url: QUEEN_LINK },
+    { label: "Moby",                   url: QUEEN_LINK },
   ],
   "2026-7-21": [
-    { label: "CHOPT", url: "https://REPLACE_ME" },
-    { label: "CAVA", url: "https://REPLACE_ME" },
+    { label: "CHOPT", url: QUEEN_LINK },
+    { label: "CAVA",  url: QUEEN_LINK },
   ],
   "2026-7-23": [
-    { label: "Sweet Leaf", url: "https://REPLACE_ME" },
-    { label: "Potbelly", url: "https://REPLACE_ME" },
+    { label: "Sweet Leaf", url: QUEEN_LINK },
+    { label: "Potbelly",   url: QUEEN_LINK },
   ],
   "2026-7-28": [
-    { label: "CHOPT", url: "https://REPLACE_ME" },
-    { label: "CAPO", url: "https://REPLACE_ME" },
+    { label: "CHOPT", url: QUEEN_LINK },
+    { label: "CAPO",  url: QUEEN_LINK },
   ],
   "2026-7-30": [
-    { label: "MOD FRESH", url: "https://REPLACE_ME" },
-    { label: "Super Chicken", url: "https://REPLACE_ME" },
+    { label: "MOD FRESH",    url: QUEEN_LINK },
+    { label: "Super Chicken", url: QUEEN_LINK },
   ],
 
 };
@@ -390,6 +399,5 @@ const DATE_OVERRIDES = {
 
   render();
 </script>
-
-
-</body></html>
+</body>
+</html>
