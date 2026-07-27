@@ -168,9 +168,9 @@ const DATE_OVERRIDES = {
     { label: "HoneyGrow", url: "https://drd.sh/cart/PsGFTMj2AL01AU03/" },
   ],
   "2026-4-14": [
-    { label: "Dave's Hot",          url: "https://drd.sh/cart/Q0Eu1JbEmMYXxQQ5/" },
+    { label: "Dave's Hot",           url: "https://drd.sh/cart/Q0Eu1JbEmMYXxQQ5/" },
     { label: "HAPPY BDAY DEREK! 🎂", url: "https://fjcapital.sharepoint.com/:i:/s/FJGlobalHQ2/IQBBM_Yy4JRzRKInBgPmHMg6AQtVIN-8zjuHbrbagA4HyyU?e=pOMhOo" },
-    { label: "Flower Child",         url: "https://drd.sh/cart/dwCgQEFF4NUDCf78/" },
+    { label: "Flower Child",          url: "https://drd.sh/cart/dwCgQEFF4NUDCf78/" },
   ],
   "2026-4-16": [
     { label: "CAVA",     url: "https://drd.sh/cart/tpE2YkwWa4Uw193O/" },
@@ -288,28 +288,32 @@ const DATE_OVERRIDES = {
   ],
   "2026-7-14": [
     { label: "Flower Child", url: "https://drd.sh/cart/TK2QdJ4KSAl5lxJc/" },
-    { label: "Nandos",    url: "https://drd.sh/cart/tBQhP5OPlhtL18x9/" },
+    { label: "Nandos",       url: "https://drd.sh/cart/tBQhP5OPlhtL18x9/" },
   ],
   "2026-7-16": [
     { label: "Sweet Leaf", url: "https://drd.sh/cart/bNL7k4LNcpUcCUIa/" },
-    { label: "Moby",                   url: "https://drd.sh/cart/gVU25VNUHb5wR9Mj/" },
+    { label: "Moby",       url: "https://drd.sh/cart/gVU25VNUHb5wR9Mj/" },
   ],
   "2026-7-21": [
     { label: "Falafel Inc", url: "https://drd.sh/cart/y3VQizXRwKHyYRco/" },
-    { label: "CAVA",  url: "https://drd.sh/cart/RSbKzOLiKsU3kuLN/" },   
-    { label: "CHOPT",  url: "https://drd.sh/cart/XPLKZH2onMSFd8Vn/" },
+    { label: "CAVA",        url: "https://drd.sh/cart/RSbKzOLiKsU3kuLN/" },
+    { label: "CHOPT",       url: "https://drd.sh/cart/XPLKZH2onMSFd8Vn/" },
   ],
   "2026-7-23": [
-    { label: "Sweet Leaf", url: "https://drd.sh/cart/byd9aHtkbbkEgq2X/" },
-    { label: "Potbelly",   url: "https://drd.sh/cart/bbcWiejcmzFDG44a/" },
+    { label: "Sweet Leaf", url: QUEEN_LINK },
+    { label: "Potbelly",   url: QUEEN_LINK },
+  ],
+  "2026-7-27": [
+    { label: "Dan's BDay Lunch Bash!", url: "https://fjcm-ej.github.io/lunch-calendar/dan-bday.html" },
+    { label: "Catered by Olive Garden", url: "https://fjcm-ej.github.io/lunch-calendar/dan-bday.html" },
   ],
   "2026-7-28": [
-    { label: "CHOPT", url: QUEEN_LINK },
-    { label: "CAPO",  url: QUEEN_LINK },
+    { label: "Serena's Choice: Big Greek Cafe", url: "https://drd.sh/cart/NKKxR5KACCetjjg9/" },
+    { label: "Dan's Choice: Lost Dog",  url: "https://drd.sh/cart/1JTielSYODhv8BJj/" },
   ],
   "2026-7-30": [
-    { label: "MOD FRESH",    url: QUEEN_LINK },
-    { label: "Super Chicken", url: QUEEN_LINK },
+    { label: "SweetGreen",     url: "https://drd.sh/cart/bSLnYpMSuJMWZvKb/" },
+    { label: "Super Chicken", url: "https://drd.sh/cart/h0GaEMWx111GFVRc/" },
   ],
 
 };
@@ -362,9 +366,10 @@ const DATE_OVERRIDES = {
       num.textContent = d;
       cell.appendChild(num);
 
-      if (isTueThu(dow)) {
-        const key = `${viewYear}-${viewMonth + 1}-${d}`;
-        const venues = DATE_OVERRIDES[key] || [];
+      const key = `${viewYear}-${viewMonth + 1}-${d}`;
+      const venues = DATE_OVERRIDES[key] || [];
+
+      if (isTueThu(dow) || venues.length > 0) {
         const links = document.createElement("div");
         links.className = "order-links";
 
