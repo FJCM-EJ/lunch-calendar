@@ -241,7 +241,8 @@
   }, 1600);
 
   setTimeout(() => {
-    window.location.href = 'DOORDASH_LINK_HERE';
+   const dest = new URLSearchParams(window.location.search).get('to');
+  if (dest) window.location.href = decodeURIComponent(dest);
   }, 5000);
 </script>
 </body>
