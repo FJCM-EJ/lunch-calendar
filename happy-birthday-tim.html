@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Tim!</title>
+<link rel="preload" as="image" href="happy-birthday-tim.gif">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: #101a2e;          /* sampled from the GIF so it blends edge to edge */
+    color: #c8d4f0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 16px;
+    overflow: hidden;
+  }
+  .stage {
+    display: flex; align-items: center; justify-content: center;
+    flex: 1 1 auto; min-height: 0; width: 100%;
+  }
+  .stage img {
+    max-width: 100%; max-height: 100%;
+    width: auto; height: auto;
+    display: block;
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  .stage img.ready { opacity: 1; }
+
+  .loading {
+    position: absolute; font-size: 0.8rem; color: #4a5f8a;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .loading.hide { display: none; }
+
+  .bar {
+    flex: 0 0 auto; padding: 14px 0 4px;
+    display: flex; align-items: center; gap: 14px;
+    font-size: 0.78rem; min-height: 44px;
+  }
+  .status { color: #8fa3c9; }
+  .status strong { color: #e8b84f; font-weight: 600; }
+  .count {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #4f7de8; color: #fff; font-weight: 600;
+    font-size: 0.75rem; vertical-align: middle; margin: 0 1px;
+  }
+  .link {
+    background: none; border: none; padding: 0;
+    color: #6d96f7; font: inherit; cursor: pointer; text-decoration: none;
+  }
+  .link:hover { text-decoration: underline; }
+  .sep { color: #2a3a5c; }
+  @media (max-width: 640px) {
+    .bar { flex-wrap: wrap; justify-content: center; gap: 10px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="loading" id="loading">Loading…</div>
+  <img id="gif" src="happy-birthday-tim.gif" alt="Happy Birthday, Tim! — from all of us at FJ Capital">
+</div>
+
+<div class="bar" id="bar"></div>
+
+<script>
+(function () {
+  var SECONDS = 4;
+
+  var params = new URLSearchParams(window.location.search);
+  var target = params.get('to');
+  var venue  = params.get('v');
+
+  var img     = document.getElementById('gif');
+  var loading = document.getElementById('loading');
+  var bar     = document.getElementById('bar');
+
+  // Only follow http(s) targets.
+  var safe = false;
+  if (target) {
+    try {
+      var u = new URL(target, window.location.href);
+      safe = (u.protocol === 'http:' || u.protocol === 'https:');
+    } catch (e) { safe = false; }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c];
+    });
+  }
+
+  // --- show the GIF once it has actually loaded (it's ~3.8MB) ---
+  function reveal() {
+    loading.classList.add('hide');
+    img.classList.add('ready');
+    startCountdown();
+  }
+  if (img.complete && img.naturalWidth) { reveal(); }
+  else {
+    img.addEventListener('load', reveal);
+    img.addEventListener('error', reveal);
+    setTimeout(reveal, 6000); // fallback so a slow load never strands anyone
+  }
+
+  // --- countdown + redirect ---
+  var started = false;
+  function startCountdown() {
+    if (started) return;
+    started = true;
+
+    if (!safe) {
+      bar.innerHTML = '<a class="link" href="https://fjcm-ej.github.io/lunch-calendar/">' +
+                      '&larr; Back to the lunch calendar</a>';
+      return;
+    }
+
+    var where = venue || 'your order';
+    var remaining = SECONDS;
+    var timer = null;
+
+    var status = document.createElement('span');
+    status.className = 'status';
+
+    var stay = document.createElement('button');
+    stay.className = 'link'; stay.type = 'button';
+    stay.textContent = 'let me watch';
+
+    var sep = document.createElement('span');
+    sep.className = 'sep'; sep.textContent = '·';
+
+    var go = document.createElement('a');
+    go.className = 'link'; go.href = target;
+    go.textContent = 'order now →';
+
+    bar.appendChild(status);
+    bar.appendChild(stay);
+    bar.appendChild(sep);
+    bar.appendChild(go);
+
+    function render() {
+      status.innerHTML = 'Opening <strong>' + escapeHtml(where) +
+        '</strong> in <span class="count">' + remaining + '</span>';
+    }
+
+    stay.addEventListener('click', function () {
+      clearInterval(timer);
+      status.innerHTML = 'Take your time 🎈';
+      stay.remove(); sep.remove();
+    });
+
+    render();
+    timer = setInterval(function () {
+      remaining -= 1;
+      if (remaining <= 0) {
+        clearInterval(timer);
+        status.innerHTML = 'Opening <strong>' + escapeHtml(where) + '</strong>…';
+        window.location.replace(target);
+      } else {
+        render();
+      }
+    }, 1000);
+  }
+})();
+</script>
+
+</body>
+</html>
