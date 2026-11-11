@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Jin!</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #0f2044;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <img src="jin-birthday.gif" alt="Happy Birthday, Jin!">
+
+  <script>
+    // Show the splash for 2s, then forward to the DoorDash cart in ?to=
+    const ALLOWED_HOSTS = ["drd.sh"];
+    const to = new URLSearchParams(location.search).get("to");
+
+    if (to) {
+      try {
+        const url = new URL(to);
+        if (url.protocol === "https:" && ALLOWED_HOSTS.includes(url.hostname)) {
+          setTimeout(() => location.replace(url.href), 2000);
+        }
+      } catch (e) { /* bad URL: just stay on the splash */ }
+    }
+  </script>
+</body>
+</html>
